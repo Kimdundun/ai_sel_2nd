@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나의 강점 찾기 학습지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gaegu:wght@400;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFFBF3;
+    --paper:#FFFFFF;
+    --orange:#FF8C42;
+    --yellow:#FFC93C;
+    --mint:#3FC1B0;
+    --coral:#FF6B6B;
+    --ink:#3B3A39;
+    --soft:#FFEFD9;
+    --softmint:#E3F7F4;
+    --line:#E7D9C4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:#EAE3D7;
+    font-family:'Gowun Dodum',sans-serif;
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  .page{
+    width:210mm;
+    height:297mm; /* A4 세로 고정 크기 */
+    background:var(--cream);
+    margin:18px auto;
+    padding:11mm 13mm; /* 여백 최적화 */
+    position:relative;
+    box-shadow:0 6px 24px rgba(0,0,0,.15);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  /* sun rays corner decoration */
+  .page::before{
+    content:"";
+    position:absolute;top:-70px;right:-70px;
+    width:200px;height:200px;border-radius:50%;
+    background:radial-gradient(circle,var(--yellow) 0%,rgba(255,201,60,.0) 70%);
+    opacity:.55;
+  }
+  h1,h2,.badge,.qtitle,.ribbon{font-family:'Jua',sans-serif;font-weight:400;}
+
+  /* Header */
+  .header{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;border-bottom:4px dotted var(--orange);padding-bottom:10px;margin-bottom:14px;position:relative;z-index:2;}
+  .title-wrap{display:flex;align-items:center;gap:10px;}
+  .star{width:40px;height:40px;flex:none;}
+  h1{font-size:34px;color:var(--orange);letter-spacing:1px;}
+  h1 small{display:block;font-family:'Gowun Dodum';font-size:13px;color:var(--mint);letter-spacing:0;margin-top:2px;}
+  .namebox{font-size:13px;text-align:right;line-height:2;}
+  .namebox .fill{display:inline-block;border-bottom:1.5px solid var(--ink);min-width:46px;text-align:center;}
+
+  /* Inquiry ribbon - 오늘의 탐구 질문 대폭 확대 */
+  .ribbon{background:linear-gradient(90deg,var(--mint),#5fd6c6);color:#fff;border-radius:14px;padding:12px 16px;font-size:32px;text-align:center;margin-bottom:14px;box-shadow:0 3px 0 #2fa697;position:relative;z-index:2;}
+  .ribbon span{font-family:'Gowun Dodum';font-size:14px;display:block;opacity:.9;margin-bottom:4px;}
+
+  /* Activity */
+  .activity{background:var(--paper);border:2px solid var(--line);border-radius:16px;padding:12px 16px;margin-bottom:12px;position:relative;z-index:2;}
+  .ahead{display:flex;align-items:center;gap:9px;margin-bottom:8px;}
+  .badge{background:var(--orange);color:#fff;font-size:15px;border-radius:10px;padding:3px 11px;flex:none;}
+  .ahead h2{font-size:19px;color:var(--ink);}
+  .step{font-size:14px;font-weight:700;color:var(--orange);margin:8px 0 4px;}
+  .step .num{display:inline-block;background:var(--softmint);color:var(--mint);border-radius:50%;width:21px;height:21px;text-align:center;line-height:21px;font-size:13px;margin-right:5px;}
+
+  /* example box */
+  .ex{background:var(--soft);border-radius:10px;padding:8px 12px;font-family:'Gaegu';font-size:15px;color:#8a5a25;margin:4px 0 6px;border-left:5px solid var(--yellow);line-height:1.4;}
+  .ex b{font-family:'Jua';color:var(--orange);font-size:13px;display:inline-block;background:#fff;border-radius:6px;padding:0 7px;margin-right:6px;}
+
+  /* fill template */
+  .frame{background:#FFFDF8;border:1.5px dashed var(--orange);border-radius:10px;padding:8px 12px;font-size:14px;line-height:2.3;margin-bottom:6px;}
+  .blank{display:inline-block;border-bottom:1.5px solid var(--mint);min-width:130px;vertical-align:bottom;}
+  .blank.md{min-width:180px;} /* 어떤 상황: 기존 대비 1.5cm 연장 */
+  .blank.lg{min-width:220px;} /* 어떻게 행동: 기존 대비 2.5cm 연장 */
+  .tag{font-size:11px;color:var(--mint);font-weight:bold;}
+
+  /* top3 */
+  .top3{display:flex;gap:9px;margin-top:4px;}
+  .rankcard{flex:1;background:var(--softmint);border-radius:12px;padding:8px;text-align:center;}
+  .rankcard .r{font-family:'Jua';color:var(--mint);font-size:15px;}
+  .rankcard .w{background:#fff;border-radius:8px;margin-top:5px;height:34px;}
+
+  /* 친구가 찾아주는 나의 강점 모으기 표 */
+  .peer-table{width:100%;border-collapse:collapse;margin:6px 0;background:#fff;}
+  .peer-table th, .peer-table td{border:1.5px solid var(--line);padding:6px 8px;font-size:13px;text-align:center;vertical-align:middle;}
+  .peer-table th{background:var(--softmint);color:var(--mint);font-family:'Jua',sans-serif;font-weight:400;}
+  .peer-table td{height:34px;}
+
+  /* 줄 간격을 아이들 글씨 크기에 맞춰 대폭 넓힘 (41px) */
+  .lines{background:repeating-linear-gradient(transparent,transparent 41px,var(--line) 41px,var(--line) 42px);border-radius:8px;}
+  .lines.line-2{height:84px;}
+  .lines.line-3{height:126px;}
+  .lines.line-4{height:168px;}
+  .writebox{border:1.5px solid var(--line);border-radius:10px;padding:6px 9px;margin-top:4px;}
+
+  /* helper / tip */
+  .tip{background:var(--softmint);border-radius:10px;padding:7px 10px;font-size:13px;margin-top:6px;}
+  .tip .lab{font-family:'Jua';color:var(--mint);font-size:13px;margin-right:5px;}
+
+  /* Prompt Boxes from reference image style */
+  .prompt-container {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    margin: 8px 0;
+  }
+  .p-box {
+    border-radius: 14px;
+    padding: 10px 12px;
+    border: 2px solid var(--p-border);
+    background-color: var(--p-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .p-box-yellow {
+    --p-border: #FFD479;
+    --p-bg: #FFFDF4;
+    --p-title: #C18F02;
+  }
+  .p-box-orange {
+    --p-border: #FFB38A;
+    --p-bg: #FFF8F3;
+    --p-title: #E05300;
+  }
+  .p-box-teal {
+    --p-border: #A2E3D8;
+    --p-bg: #F3FCFA;
+    --p-title: #1E8275;
+  }
+  .p-title {
+    font-family: 'Jua', sans-serif;
+    font-size: 15px;
+    color: var(--p-title);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .p-title .p-blank {
+    border-bottom: 1.5px solid var(--p-title);
+    min-width: 65px;
+    display: inline-block;
+    height: 18px;
+    vertical-align: bottom;
+    margin-left: 4px;
+  }
+  .p-textarea {
+    background: #FFFFFF;
+    border: 1px solid #E8E5DF;
+    border-radius: 8px;
+    padding: 6px 10px;
+  }
+  .p-textarea .lines-inner {
+    background: repeating-linear-gradient(transparent, transparent 29px, #EBE8E2 29px, #EBE8E2 30px);
+    height: 60px; /* 아이들이 편하게 2줄 쓸 수 있는 넓은 간격의 노트선 */
+  }
+
+  /* closing */
+  .closing{background:linear-gradient(120deg,var(--yellow),var(--orange));border-radius:16px;padding:14px 16px;color:#fff;position:relative;z-index:2;}
+  .closing .qtitle{font-size:17px;margin-bottom:7px;}
+  .closing .ansbox{background:rgba(255,255,255,.93);border-radius:10px;color:var(--ink);}
+
+  .pagefoot{text-align:center;font-size:11px;color:#b6a98f;margin-bottom:5px;position:relative;z-index:2;}
+
+  @media print{
+    body{background:#fff;}
+    .page{margin:0;box-shadow:none;page-break-after:always;}
+    .page:last-child{page-break-after:auto;}
+  }
+  @page{size:A4;margin:0;}
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1 ============ -->
+<div class="page">
+  <div>
+    <div class="header">
+      <div class="title-wrap">
+        <svg class="star" viewBox="0 0 24 24" fill="#FFC93C" stroke="#FF8C42" stroke-width="1"><path d="M12 2l2.6 6.3 6.8.5-5.2 4.4 1.7 6.6L12 16.9 6.3 20.3 8 13.7 2.8 9.3l6.8-.5z"/></svg>
+        <h1>나의 강점 찾기<small>★ 데이터를 모아 나의 강점을 또렷하게 ★</small></h1>
+      </div>
+      <div class="namebox">
+        <div><span class="fill">5</span> 학년 <span class="fill"></span> 반</div>
+        <div>이름 <span class="fill" style="min-width:90px;"></span></div>
+      </div>
+    </div>
+
+    <div class="ribbon">
+      <span>오늘의 탐구 질문</span>
+      우리의 강점을 구체적으로 알면 어떤 점이 좋을까요?
+    </div>
+
+    <!-- Activity 1 -->
+    <div class="activity" style="margin-bottom:0;">
+      <div class="ahead"><span class="badge">활동 1</span><h2>나의 강점 데이터 모으기</h2></div>
+
+      <div class="step"><span class="num">1</span>강점 검사 결과지에서 나의 강점 TOP 3 찾기</div>
+      <div class="top3">
+        <div class="rankcard"><div class="r">🥇 1위</div><div class="w"></div></div>
+        <div class="rankcard"><div class="r">🥈 2위</div><div class="w"></div></div>
+        <div class="rankcard"><div class="r">🥉 3위</div><div class="w"></div></div>
+      </div>
+
+      <div class="step"><span class="num">2</span>그 강점이 드러난 <b style="color:var(--coral)">상황·행동·경험</b>을 떠올려 적기</div>
+      <div class="ex">
+        <b>예시</b>친구와 다퉈서 속상했지만, 다음 날 내가 먼저 다가가 말을 걸어 다시 친해졌다.<br>
+        → 나의 강점: 회복성
+      </div>
+      
+      <!-- 총 3칸의 상황, 행동, 강점 작성 란 -->
+      <div class="frame">
+        나는 <span class="blank md"></span> <span class="tag">(어떤 상황)</span> 때, 
+        <span class="blank lg"></span> <span class="tag">(어떻게 행동)</span> 했다.<br>
+        → 그래서 나의 강점은 <span class="blank"></span> 이다.
+      </div>
+      <div class="frame">
+        나는 <span class="blank md"></span> <span class="tag">(어떤 상황)</span> 때, 
+        <span class="blank lg"></span> <span class="tag">(어떻게 행동)</span> 했다.<br>
+        → 그래서 나의 강점은 <span class="blank"></span> 이다.
+      </div>
+      <div class="frame" style="margin-bottom:12px;">
+        나는 <span class="blank md"></span> <span class="tag">(어떤 상황)</span> 때, 
+        <span class="blank lg"></span> <span class="tag">(어떻게 행동)</span> 했다.<br>
+        → 그래서 나의 강점은 <span class="blank"></span> 이다.
+      </div>
+
+      <div class="step"><span class="num">3</span>친구가 찾아주는 나의 강점 모으기</div>
+      
+      <!-- 4행 3열 구조의 친구 강점 피드백 표 -->
+      <table class="peer-table">
+        <thead>
+          <tr>
+            <th style="width: 20%;">친구 이름</th>
+            <th style="width: 25%;">강점 단어</th>
+            <th style="width: 55%;">친구가 말해준 나의 강점 증거</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="tip"><span class="lab">친구 강점 찾아줄 때</span>“네가 <b>~한 모습</b>을 본 적 있어. 그래서 네 강점은 <b>~</b>인 것 같아.”</div>
+    </div>
+  </div>
+
+  <div class="pagefoot">— 1 —</div>
+</div>
+
+<!-- ============ PAGE 2 ============ -->
+<div class="page">
+  <div>
+    <!-- Activity 2 -->
+    <div class="activity">
+      <div class="ahead"><span class="badge">활동 2</span><h2>나의 강점 프롬프트 만들기</h2></div>
+      <p style="font-size:13.5px;margin-bottom:6px;">검사 결과, 나의 경험, 친구가 찾아준 강점 중 <b>2가지를 선택하여</b> 나의 강점이 잘 드러나는 <b>프롬프트</b>를 써 봅시다. AI가 구체적인 데이터를 받을수록 더 멋진 결과를 그려줘요!</p>
+      
+      <!-- 3종 프롬프트 박스 레이아웃 -->
+      <div class="prompt-container">
+        <!-- 1. 나의 기본 캐릭터 박스 (옐로우 테마) -->
+        <div class="p-box p-box-yellow">
+          <div class="p-title">☀️ 나의 기본 캐릭터</div>
+          <div class="p-textarea">
+            <div class="lines-inner"></div>
+          </div>
+        </div>
+
+        <!-- 2. 첫 번째 강점 박스 (오렌지 테마) -->
+        <div class="p-box p-box-orange">
+          <div class="p-title">⭐ 첫 번째 강점 · <span class="p-blank"></span></div>
+          <div class="p-textarea">
+            <div class="lines-inner"></div>
+          </div>
+        </div>
+
+        <!-- 3. 두 번째 강점 박스 (민트 테마) -->
+        <div class="p-box p-box-teal">
+          <div class="p-title">⭐ 두 번째 강점 · <span class="p-blank"></span></div>
+          <div class="p-textarea">
+            <div class="lines-inner"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity 3 -->
+    <div class="activity">
+      <div class="ahead"><span class="badge" style="background:var(--mint);">활동 3</span><h2>우리 반 강점 갤러리 둘러보기</h2></div>
+      <p style="font-size:13.5px;margin-bottom:6px;">친구들의 강점 캐릭터와 프롬프트를 둘러봅시다. 우리 반에는 정말 다양한 강점이 있네요!</p>
+      <div class="step" style="color:var(--mint);"><span class="num">★</span>친구의 강점 중 ‘아, 저 친구한테 이런 강점이?’ 하고 새롭게 알게 된 것</div>
+      <div class="writebox lines line-2"></div>
+    </div>
+
+    <!-- Closing -->
+    <div class="closing">
+      <div class="qtitle">🌟 오늘의 탐구 질문에 답해 보기</div>
+      <div style="font-size:17px;font-weight:bold;margin-bottom:7px;font-family:'Gowun Dodum',sans-serif;">우리의 강점을 구체적으로 알면 어떤 점이 좋을까요?</div>
+      <div class="ansbox writebox lines line-3" style="border:none;"></div>
+    </div>
+  </div>
+
+  <div class="pagefoot">— 2 —</div>
+</div>
+
+</body>
+</html>
